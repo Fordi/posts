@@ -1,21 +1,26 @@
 {
-  "name": "psyc",
+  "name": "posts",
+  "properName": "Posts",
   "version": "0.1.0",
   "private": true,
+  "main": "app/main.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "electron-json-storage": "^4.6.0",
+    "markdown-it-task-lists": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "serve": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "start": "concurrently -k \"BROWSER=none npx craco start\" \"sleep 5; npx electron .\""
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +39,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "concurrently": "^8.0.1",
+    "electron": "^23.2.1",
+    "electron-is-dev": "^2.0.0",
+    "markdown-it": "^13.0.1",
+    "wait-on": "^7.0.1"
   }
 }

@@ -1,0 +1,20 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>
+      @keyframes simple-spinner-anim {
+         0%{ transform:translate(8px,8px) rotate(0deg);}
+         to{ transform:translate(8px,8px) rotate(360deg);}
+      }
+    </style>
+  </defs>
+  <g fill="currentColor" opacity=".1" style="animation:simple-spinner-anim 8s linear infinite">
+    <use xlink:href="#pill" transform="rotate(-135)"/>
+    <use xlink:href="#pill" transform="rotate(-90)"/>
+    <use xlink:href="#pill" transform="rotate(-45)"/>
+    <rect id="pill" width="2" height="4" x="7" rx="1" transform="translate(-8 -8)"/>
+    <use xlink:href="#pill" transform="rotate(45)"/>
+    <use xlink:href="#pill" transform="rotate(90)"/>
+    <use xlink:href="#pill" transform="rotate(135)"/>
+    <use xlink:href="#pill" transform="rotate(180)"/>
+  </g>
+</svg>

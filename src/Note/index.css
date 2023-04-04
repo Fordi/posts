@@ -1,0 +1,59 @@
+.note>.layout__content {
+  display: flex;
+  flex-direction: column;
+  background: var(--note-bg);
+}
+.note__main {
+  display: flex;
+  flex-direction: column;
+  background: var(--note-bg);
+  flex: 1 1 auto;
+}
+.note__heading {
+  z-index: 5;
+  display: flex;
+}
+.note__title {
+  font-family: var(--system-fonts);
+  background: transparent;
+  padding: 0.3125rem;
+  border: none;
+  width: 100vw;
+  flex: 0 1 auto;
+  resize: none;
+  color: inherit;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  height: 2.625rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.note__editor {
+  overflow-y: auto;
+	box-sizing: border-box;
+	background: #ECE5DD;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.75rem;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  z-index: 3;
+  resize: none;
+  flex: 1 1 auto;
+  width: 100vw;
+}
+
+.note__content {
+  flex: 1 1 auto;
+}
+
+.note__placeholder {
+  font-size: 0.8rem;
+  color: var(--placeholder-text);
+}
+
+.color-picker {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+}

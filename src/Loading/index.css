@@ -1,0 +1,31 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.loading {
+	z-index: 301;
+	background-color: #ECE5DD;
+	opacity: 1;
+	position: fixed;
+  top: 0;
+  left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	transition: opacity 0.3s;
+	user-select: none;
+}
+
+.loading>img {
+  pointer-events: none;
+}
+
+.loading.loaded {
+	opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,74 @@
+.layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}
+.layout__content {
+  flex: 1 1 auto;
+}
+.accent-bar {
+  box-sizing: border-box;
+  font-family: Ubuntu;
+  width: 100vw;
+  background: currentColor;
+  z-index: 9001;
+  padding: 0.4rem 0;
+  user-select: none;
+  height: 0.4rem;
+  position: relative;
+}
+
+.accent-bar__draggable {
+  position: fixed;
+  left: 0px;
+  top: 0;
+  height: 0.4rem;
+  width: 100vw;
+  -webkit-app-region: drag;
+}
+.accent-bar--hover .accent-bar__draggable {
+  display: none;
+}
+
+.accent-bar__info {
+  background: currentColor;
+  display: flex;
+  padding: 0 0.4rem;
+  margin-top: -1.85rem;
+  margin-bottom: 1.85rem;
+  transition-property: margin-top, margin-bottom;
+  transition-duration: 0.4s;
+}
+
+.accent-bar--hover .accent-bar__info {
+  margin-top: 0;
+  -webkit-app-region: drag;
+}
+
+.accent-bar__title {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.6rem;
+  color: var(--chrome-symbols);
+  margin-right: 0.5em;
+  flex: 0 1 auto;
+}
+
+.accent-bar__version {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: var(--chrome-symbols);
+  opacity: 0.5;
+  flex: 1 0 auto;
+}
+.accent-bar__move {
+  font-size: 0.8rem;
+  line-height: 1.6rem;
+  color: var(--note-bg);
+  flex: 0 0 auto;
+}
+.layout__content {
+  position: relative;
+}
