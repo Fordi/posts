@@ -75,7 +75,7 @@ export default function Note({ noteId }) {
   }, []);
 
   const menuItems = useTransform(() => [
-    { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Ctrl+Backspace'] },
+    { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
     {
       key: 'edit-save',
       title: editing ? "Save" : "Edit",

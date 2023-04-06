@@ -1,5 +1,5 @@
 :root {
-  --system-fonts: "Ubuntu", "Segoe UI", "San Francisco", sans-serif;
+  --system-fonts: "Ubuntu", "Segoe UI", "Helvetica Neue", "San Francisco", sans-serif;
   --mono-fonts: "Fira Code", "Consolas", monospace;
   --note-bg: #ECE5DD;
   --placeholder-text: #AAA;

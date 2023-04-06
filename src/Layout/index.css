@@ -11,7 +11,6 @@
 }
 .accent-bar {
   box-sizing: border-box;
-  font-family: Ubuntu;
   width: 100vw;
   background: currentColor;
   z-index: 9001;
@@ -55,7 +54,7 @@
 
 .accent-bar__title {
   display: block;
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 1.6rem;
   color: var(--chrome-symbols);
   margin-right: 0.5em;
@@ -64,7 +63,7 @@
 
 .accent-bar__version {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.5rem;
   line-height: 1.6rem;
   color: var(--chrome-symbols);
   opacity: 0.5;

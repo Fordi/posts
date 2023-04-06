@@ -39,7 +39,7 @@ module.exports = async function showNote(noteId) {
   const { width, height, x, y, alwaysOnTop } = (await updateNote({ id: noteId, open: true })) || {};
   const window = new BrowserWindow({ ...noteWindowProps, width, height, x, y });
   window.setMenu(null);
-
+  window.setWindowButtonVisibility(false);
   if (isDev) {
     window.webContents.openDevTools({ mode: 'detach' });
   }
