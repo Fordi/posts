@@ -23,9 +23,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build:electron": "electron -wl",
+    "build:electron": "electron-builder -wl",
     "build:react": "craco build",
-    "build": "craco build && electron -wl",
+    "build": "craco build && electron-builder -wl",
     "test": "craco test",
     "start": "concurrently -k \"BROWSER=none npx craco start\" \"sleep 5; npx electron .\""
   },
