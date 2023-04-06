@@ -1,4 +1,4 @@
-const { platform } = window.navigator.userAgentData.platform;
+const { platform } = window.navigator.userAgentData;
 const isApple = platform === 'macOS' || platform === 'iOS';
 const isWin = platform === 'Windows';
 
