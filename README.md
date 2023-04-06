@@ -9,7 +9,7 @@ It was build from zero using React, the latest Electron, and the latest LTS-stab
 
 # Installation
 
-Go to the [latest release](releases/latest) and download an appropriate package.
+Go to the [latest release](../../releases/latest) and download an appropriate package.
 
 ## Features
 
