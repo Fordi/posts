@@ -6,12 +6,12 @@ function on(noteId, fn) {
   if (noteId === '$') return () => {};
   listeners[noteId] = listeners[noteId] || new Set();
   listeners[noteId].add(fn);
-  return () => listeners[noteId].remove(fn);
+  return () => listeners[noteId].delete(fn);
 };
 
 function onAll(fn) {
   listeners.$.add(fn);
-  return () => listeners.$.remove(fn); 
+  return () => listeners.$.delete(fn); 
 };
 
 

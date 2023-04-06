@@ -8,19 +8,9 @@
   "main": "app/main.js",
   "homepage": ".",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "electron-is-dev": "^2.0.0",
     "electron-json-storage": "^4.6.0",
-    "markdown-it": "^13.0.1",
-    "markdown-it-task-lists": "^2.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "turndown": "^7.1.2",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.4"
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "build:electron": "electron-builder -wl",
@@ -52,7 +42,17 @@
     "concurrently": "^8.0.1",
     "electron": "^23.2.1",
     "electron-builder": "^23.6.0",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "markdown-it": "^13.0.1",
+    "markdown-it-task-lists": "^2.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "turndown": "^7.1.2",
+    "web-vitals": "^2.1.4"
   },
   "build": {
     "appId": "org.fordi.posts",
