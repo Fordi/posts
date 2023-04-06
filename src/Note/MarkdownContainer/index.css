@@ -1,0 +1,3 @@
+.markdown--render>*:first-child {
+  margin-top: 0;
+}

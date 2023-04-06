@@ -7,3 +7,10 @@ body, html {
 	font-family: var(--system-fonts);
 	font-size: 1rem;
 }
+
+a, a[href], a:visited, a:active, a:hover, a:focus {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: bold;
+}
+

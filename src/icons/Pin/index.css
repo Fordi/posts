@@ -1,0 +1,7 @@
+.icon--pin>path {
+  transition: transform 0.4s;
+  transform: none;
+}
+.icon--pin.icon--pin--in>path {
+  transform: translate(8px, 23.8px) rotate(-45deg) translate(0px, -16px);
+}

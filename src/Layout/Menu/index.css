@@ -1,18 +1,21 @@
 .menu {
-	background-color: var(--note-bg);
+	color: var(--chrome-symbols);
 	user-select: none;
 	display: flex;
-	flex: 0 0 auto;
+	flex: 0 1 auto;
 }
 
-.menu_icon {
+.menu__item {
+  width: 2rem;
+	height: 2rem;
 	padding: 0.5rem;
-  height: 2rem;
 	user-select: none;
 	position: relative;
 	box-sizing: border-box;
-	z-index: 2;	
+	z-index: 2;
+	flex: 0 1 auto;
 }
-.menu_icon:hover {
+
+.menu__item:hover {
 	background-color: var(--hovered-icon);
 }

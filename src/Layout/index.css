@@ -3,9 +3,11 @@
   width: 100vw;
   height: 100vh;
   flex-direction: column;
+  overflow: hidden;
 }
 .layout__content {
   flex: 1 1 auto;
+  overflow: hidden;
 }
 .accent-bar {
   box-sizing: border-box;
@@ -17,6 +19,7 @@
   user-select: none;
   height: 0.4rem;
   position: relative;
+  flex: 0 0 auto;
 }
 
 .accent-bar__draggable {
@@ -25,7 +28,6 @@
   top: 0;
   height: 0.4rem;
   width: 100vw;
-  -webkit-app-region: drag;
 }
 .accent-bar--hover .accent-bar__draggable {
   display: none;
@@ -34,16 +36,21 @@
 .accent-bar__info {
   background: currentColor;
   display: flex;
-  padding: 0 0.4rem;
+  padding: 0 0.2rem 0 0.4rem;
   margin-top: -1.85rem;
   margin-bottom: 1.85rem;
   transition-property: margin-top, margin-bottom;
   transition-duration: 0.4s;
 }
 
+.accent-bar__drag {
+  display: flex;
+  -webkit-app-region: drag;
+  flex: 1 1 auto;
+}
+
 .accent-bar--hover .accent-bar__info {
   margin-top: 0;
-  -webkit-app-region: drag;
 }
 
 .accent-bar__title {
@@ -63,12 +70,19 @@
   opacity: 0.5;
   flex: 1 0 auto;
 }
+
 .accent-bar__move {
   font-size: 0.8rem;
   line-height: 1.6rem;
   color: var(--note-bg);
   flex: 0 0 auto;
 }
+
 .layout__content {
   position: relative;
+}
+
+.menu {
+  position: relative;
+  top: -0.2rem;
 }

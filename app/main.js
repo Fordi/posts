@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const API = require('./API/index.js');
 const { createTrayIcon, buildTrayMenu } = require('./Tray/index.js');
 const features = require('./features.js');

@@ -1,7 +1,7 @@
 const { app } = require('electron');
 const { v4: uuidv4 } = require('uuid');
-const storage = require('../storage.js');
 const showNote = require('./showNote.js');
+const updateNote = require('./updateNote.js');
 
 const INIT_NOTE = {
   title: "",
@@ -17,21 +17,16 @@ const INIT_NOTE = {
   y: 400,
   alarm: true,
   open: true,
+  alwaysOnTop: false,
 };
 
 module.exports = async function newNote() {
-  if (!await storage.has('notes')) {
-    await storage.set('notes', []);
-  }
-  const notes = (await storage.get('notes')) ?? [];
-  const note = {
+  const note = await updateNote({
     id: uuidv4(),
     created: +new Date(),
     modified: +new Date(),
     ...INIT_NOTE,
-  };
-  notes.push(note);
-  await storage.set('notes', notes);
+  }, true);
   const window = await showNote(note.id);
   await app.rebuildTrayMenu();
   return { window, note };

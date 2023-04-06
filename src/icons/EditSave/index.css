@@ -1,0 +1,10 @@
+.icon--save__save, .icon--edit__edit {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.icon--edit .icon--edit__edit {
+  opacity: 1;
+}
+.icon--save .icon--save__save {
+  opacity: 1;
+}

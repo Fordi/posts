@@ -1,5 +1,4 @@
-const API = require('./API/index.js');
-const Notes = require('./Notes/index.js');
+const Notes = require('./Notes/feature.js');
 
 const Main = {
   menuItems: () => [

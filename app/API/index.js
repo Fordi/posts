@@ -1,5 +1,6 @@
-const { ipcMain } = require("electron");
+const { ipcMain, shell } = require("electron");
 const pkg = require('../../package.json');
+const { openExternal } = shell;
 
 const getArgs = (fn) => fn.toString()
   .replace(/^[\s\S]*?\(([^)]*)\)[\s\S]*$/, '$1')
@@ -20,6 +21,7 @@ function getPackage() {
 const API = {
   getApi,
   getPackage,
+  openExternal,
 };
 
 let initialized = false;

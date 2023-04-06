@@ -1,13 +1,15 @@
+.note {
+  background: var(--note-bg);
+}
 .note>.layout__content {
   display: flex;
   flex-direction: column;
-  background: var(--note-bg);
 }
 .note__main {
   display: flex;
   flex-direction: column;
-  background: var(--note-bg);
   flex: 1 1 auto;
+  overflow: hidden;
 }
 .note__heading {
   z-index: 5;
@@ -29,22 +31,25 @@
   overflow: hidden;
   white-space: nowrap;
 }
-.note__editor {
+.note__editor, .note__content {
   overflow-y: auto;
-	box-sizing: border-box;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+}
+.note__editor {
+  border: none;
 	background: #ECE5DD;
-  font-family: "Fira Code", "Consolas", monospace;
+  font-family: var(--mono-fonts);
   font-size: 0.75rem;
   background-position: bottom right;
   background-repeat: no-repeat;
   z-index: 3;
   resize: none;
-  flex: 1 1 auto;
   width: 100vw;
 }
 
 .note__content {
-  flex: 1 1 auto;
+  padding: 0 0.5rem;
 }
 
 .note__placeholder {
@@ -52,8 +57,7 @@
   color: var(--placeholder-text);
 }
 
-.color-picker {
-  width: 2rem;
-  height: 2rem;
-  border: none;
+.status {
+  height: 1rem;
+  font-size: 0.66em;
 }
