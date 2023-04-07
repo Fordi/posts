@@ -1,3 +1,25 @@
 .markdown--render>*:first-child {
   margin-top: 0;
 }
+
+.markdown--render table {
+  display: block;
+  white-space: normal;
+  overflow-x: auto;
+  width: max-content;
+  max-width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.markdown--render th, .markdown--render td {
+  padding: 9px 13px;
+  border: 1px solid currentColor;
+}
+
+.markdown--render tr:nth-child(2n) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.markdown--render tr:nth-child(2n+1) {
+  background-color: rgba(255, 255, 255, 0.05);
+}

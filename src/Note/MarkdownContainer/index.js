@@ -1,13 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import MarkdownIt from 'markdown-it';
+import taskify from "@fordi-org/taskify";
+import MarkdownMultimdTable from 'markdown-it-multimd-table';
 
 import { handleLink } from "../util";
 import "./index.css";
-import taskify from "./taskify";
 import cls from "../../util/cls";
 
-const md = new MarkdownIt().use(taskify, { readOnly: false, itemClass: 'task', listClass: 'has-tasks' });
+const md = new MarkdownIt()
+  .use(taskify, { readOnly: false, itemClass: 'task', listClass: 'has-tasks' })
+  .use(MarkdownMultimdTable, {
+    multiline: true,
+    rowspan: true,
+    headerless: true,
+    multibody: true,
+    autolabel: true,
+  });
 
 export default function MarkdownContainer({ className, content, onCheckboxChange }) {
   const rendered = useRef(null);
