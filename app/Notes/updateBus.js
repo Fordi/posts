@@ -1,4 +1,5 @@
 const { BrowserWindow, app } = require("electron");
+const posts = require("../posts");
 
 const listeners = { $: new Set() };
 
@@ -33,7 +34,7 @@ onAll(async (noteId) => {
       storageArea: null,
     });
   });
-  await app.rebuildTrayMenu();
+  await posts.buildTrayMenu();
 });
 
 module.exports = { on, fire, onAll };

@@ -8,7 +8,13 @@ import { handleLink } from "../util";
 import "./index.css";
 import cls from "../../util/cls";
 
-const md = new MarkdownIt()
+const md = new MarkdownIt({
+  html: true,
+  xhtmlOut: true,
+  breaks: false,
+  linkify: true,
+  typographer: true,
+})
   .use(taskify, { readOnly: false, itemClass: 'task', listClass: 'has-tasks' })
   .use(MarkdownMultimdTable, {
     multiline: true,
@@ -18,7 +24,7 @@ const md = new MarkdownIt()
     autolabel: true,
   });
 
-export default function MarkdownContainer({ className, content, onCheckboxChange }) {
+export default function MarkdownContainer({ className, content, onCheckboxChange, postProcess = async () => {} }) {
   const rendered = useRef(null);
   const [needsRender, setNeedsRender] = useState(false);
   const [needsListeners, setNeedsListeners] = useState(false);
@@ -49,11 +55,16 @@ export default function MarkdownContainer({ className, content, onCheckboxChange
   }, [content]);
 
   useEffect(() => {
-    if (!needsRender || !rendered.current) return;
-    rendered.current.innerHTML = content ? md.render(content) : '';
-    setNeedsRender(false);
-    setNeedsListeners(true);
-  }, [content, needsRender]);
+    (async () => {
+      if (!needsRender || !rendered.current) return;
+      const d = document.createElement('div');
+      d.innerHTML = content ? md.render(content) : '';
+      await postProcess(d);
+      rendered.current.innerHTML = d.innerHTML;
+      setNeedsRender(false);
+      setNeedsListeners(true);
+    })();
+  }, [content, needsRender, postProcess]);
 
   useEffect(() => {
     setNeedsListeners(true);

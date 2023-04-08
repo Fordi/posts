@@ -5,7 +5,7 @@ const showOpenNotes = require("./showOpenNotes.js");
 const { BrowserWindow } = require("electron");
 
 module.exports = async function menuItems () {
-  const notes = (await storage.get('notes')).filter(note => !!note.title);
+  const notes = await storage.get('notes');
   return [
     {
       label: "New note",
@@ -16,7 +16,7 @@ module.exports = async function menuItems () {
     ...(notes.length ? [
       { type: 'separator' },
       ...notes.map(({ id, title }) => ({
-        label: title,
+        label: title || "Untitled note",
         click: () => {
           const window = BrowserWindow.getAllWindows().find((window) => {
             const params = new URL(window.webContents.getURL()).searchParams;

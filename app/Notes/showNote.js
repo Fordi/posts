@@ -40,9 +40,6 @@ module.exports = async function showNote(noteId) {
   const window = new BrowserWindow({ ...noteWindowProps, width, height, x, y });
   window.setMenu(null);
   window.setWindowButtonVisibility?.(false);
-  if (isDev) {
-    window.webContents.openDevTools({ mode: 'detach' });
-  }
   
   const baseUrl = new URL(
     isDev

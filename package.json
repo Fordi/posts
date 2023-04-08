@@ -3,13 +3,15 @@
   "properName": "Posts",
   "description": "A no-frills, cross-platform sticky-notes app with Markdown support.",
   "author": "Bryan Elliott<fordiman@gmail.com>",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "app/main.js",
   "homepage": ".",
   "dependencies": {
+    "electron-context-menu": "^3.6.1",
     "electron-is-dev": "^2.0.0",
     "electron-json-storage": "^4.6.0",
+    "mime-types": "^2.1.35",
     "uuid": "^9.0.0"
   },
   "scripts": {

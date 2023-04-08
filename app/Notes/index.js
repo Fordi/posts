@@ -1,6 +1,9 @@
 const init = require('./init.js');
 const menuItems = require('./menuItems.js');
-module.exports = {
+
+const Notes = {
   init,
   menuItems,
 };
+
+module.exports = Notes;

@@ -61,3 +61,16 @@
   height: 1rem;
   font-size: 0.66em;
 }
+
+broken-image {
+  display: inline-block;
+  user-select: none;
+}
+broken-image>svg {
+  position: relative;
+  top: 0.2rem;
+  
+}
+broken-image>svg+span {
+  padding-left: 0.25rem;
+}

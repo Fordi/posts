@@ -20,6 +20,95 @@ import useAccelerators from "../util/useAccelerators.js";
 
 const closeWindow = () => window.close();
 
+const BROKEN_IMAGE = (() => {
+  const d = document.createElement('broken-image');
+  d.title = 'Broken image';
+  d.innerHTML = `<svg fill="currentColor" viewBox="0 0 64 64" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 52V12c0-1 1-2 2-2h36.7L32 20l6 7-7 9 7 8-9 10H4c-1 0-2-1-2-2Zm16-16c2 0 11 10 11 10l3-4-6-6 7-8-7-8 5-6H6v33s10-11 12-11Zm24 7-5-6s3-6 5-6 16 17 16 17V14H43l3-4h14c1 0 2 1 2 2v40c0 1-1 2-2 2H34Z"/>
+  </svg><span></span>`;
+
+  return (alt) => {
+    const p = d.cloneNode(true);
+    const t = p.querySelector('span');
+    if (alt) {
+      t.textContent = alt;
+    } else {
+      p.removeChild(t);
+    }
+    return p;
+  };
+})();
+
+
+const digestSha1 = async (data) => {
+  const binHash = new Uint8Array(await window.crypto.subtle.digest('SHA-1', data));
+  const hash = btoa(String.fromCharCode(...binHash)) 
+    .replace(/\//g, '_')
+    .replace(/\+/g, '-')
+    .replace(/=+$/, '');
+  return hash;
+};
+
+const parseDataUrl = (dataUrl) => {
+  const { pathname } = new URL(dataUrl);
+  const comma = pathname.indexOf(',');
+  const content = pathname.substring(comma === -1 ? 5 : comma + 1);
+  const mimeType = comma === -1 ? 'text/plain;charset=US-ASCII' : pathname.substring(0, comma);
+  let data;
+  let metadata;
+  if (mimeType.endsWith(';base64')) {
+    data = new Uint8Array([...atob(content)].map(n => n.charCodeAt(0)))
+    metadata = { mimeType: mimeType.substring(0, mimeType.length - 7) };
+  } else {
+    data = new TextEncoder().encode(decodeURIComponent(content));
+    metadata = { mimeType };
+  }
+  return { data, metadata };
+};
+
+const preProcessPastedHtml = async (container) => {
+  await Promise.all([...container.querySelectorAll('img')].map(async (img) => {
+    if (!img.src.startsWith('data:')) return;
+    const hash = await digestSha1(parseDataUrl(img.src)?.data);
+    if (await window.API.hasFile(hash)) {
+      img.src = `notefile:${hash}`;
+    }
+  }));
+};
+
+const saveFile = async (dataUri, { value, selectionStart, selectionEnd }) => {
+  const hash = await digestSha1(parseDataUrl(dataUri)?.data);
+  const url = `notefile:${hash}`;
+  
+  if (!await window.API.hasFile(hash)) {
+    const cmp = await window.API.newFile(dataUri);
+    if (cmp !== hash) {
+      throw new Error('Something went wrong');
+    }
+  }
+  const image = `![Image](${url})`;
+  const c = [
+    value.substring(0, selectionStart),
+    image,
+    value.substring(selectionEnd),
+  ].join('');
+  const p = selectionStart + image.length;
+  return { value: c, selectionStart: p, selectionEnd: p };
+};
+
+const postProcessRender = async (container) => Promise.all(
+  [...container.querySelectorAll('img')].map(async img => {
+    const u = new URL(img.src);
+    if (u.protocol !== 'notefile:') return;
+    try {
+      img.src = await window.API.getFileAsDataUrl(img.src.substring(9));
+    } catch (e) {
+      const rep = BROKEN_IMAGE(img.alt);
+      img.parentNode.replaceChild(rep, img);
+    }
+  })
+);
+
 export default function Note({ noteId }) {
   const { note, updateNote, onTaskToggle, deleteNote } = useNote(noteId);
 
@@ -74,6 +163,8 @@ export default function Note({ noteId }) {
     document.querySelector('.note__title').focus();
   }, []);
 
+  
+
   const menuItems = useTransform(() => [
     { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
     {
@@ -102,6 +193,7 @@ export default function Note({ noteId }) {
   useAccelerators(() => ({
     'Super+L': focusTitle,
     Escape: editing && revertContent,
+    'F12': window.API.openDevTools,
   }), [focusTitle, editing, revertContent]);
 
   return (
@@ -129,6 +221,8 @@ export default function Note({ noteId }) {
                   autoFocus={true}
                   onChange={contentChange}
                   value={content ?? ''}
+                  saveFile={saveFile}
+                  preProcessPastedHtml={preProcessPastedHtml}
                 />
 
                 <div className="status">
@@ -139,7 +233,11 @@ export default function Note({ noteId }) {
             : (
               <div className="note__content">
                 {note?.note
-                  ? <MarkdownContainer content={note?.note} onCheckboxChange={onTaskToggle} />
+                  ? <MarkdownContainer
+                      content={note?.note}
+                      onCheckboxChange={onTaskToggle}
+                      postProcess={postProcessRender}
+                    />
                   : <div className="note__placeholder">
                       Press Enter to edit this note.
                     </div>

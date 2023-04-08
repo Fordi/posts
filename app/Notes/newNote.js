@@ -1,5 +1,6 @@
 const { app } = require('electron');
 const { v4: uuidv4 } = require('uuid');
+const posts = require('../posts.js');
 const showNote = require('./showNote.js');
 const updateNote = require('./updateNote.js');
 
@@ -28,6 +29,6 @@ module.exports = async function newNote() {
     ...INIT_NOTE,
   }, true);
   const window = await showNote(note.id);
-  await app.rebuildTrayMenu();
+  await posts.buildTrayMenu();
   return { window, note };
 };

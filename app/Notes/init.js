@@ -1,22 +1,21 @@
-const newNote = require('./newNote.js');
-const showNote = require('./showNote.js');
-const storage = require('../storage.js');
-const API = require('../API/index.js');
-const showOpenNotes = require('./showOpenNotes.js');
-const updateNote = require('./updateNote.js');
-const deleteNote = require('./deleteNote.js');
-const getNote = require('./getNote.js');
+const newNote = require('./newNote');
+const showNote = require('./showNote');
+const storage = require('../storage');
+const API = require('../API');
+const showOpenNotes = require('./showOpenNotes');
+const updateNote = require('./updateNote');
+const deleteNote = require('./deleteNote');
+const getNote = require('./getNote');
+const { app, BrowserWindow } = require('electron');
 
 module.exports = async function init() {
-  API.add('getNote', getNote);
-  API.add('updateNote', updateNote);
-  API.add('deleteNote', deleteNote);
-  API.add('showOpenNotes', showOpenNotes);
-  API.add('newNote', newNote);
-  API.add('showNote', showNote);
+  API.add({
+    getNote, updateNote, deleteNote,
+    showOpenNotes, newNote, showNote,
+  });
 
   const notes = await storage.get('notes');
-
+  
   if (!notes.length) {
     await newNote();
   } else {
@@ -26,4 +25,10 @@ module.exports = async function init() {
       }
     }));
   }
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      API.newNote();
+    }
+  });
 };

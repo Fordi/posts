@@ -1,21 +1,29 @@
 
-const storage = require('electron-json-storage');
+const { app } = require('electron');
+const { join } = require('path');
+const { readFile, writeFile, stat } = require('fs/promises');
 
-const wrap = (name, argc, change) => (...args) => new Promise((r, t) => {
-	const a = new Array(argc).fill(undefined).map((_, i) => args[i]);
-	a.push((e, d) => e ? t(e) : r(d));
-	storage[name].apply(storage, a);
-});
+const root = join(app.getPath('userData'), 'storage');
 
-module.exports = {
-	get: wrap('get', 1),
-	getMany: wrap('getMany', 1),
-	getAll: wrap('getAll', 0),
-	set: wrap('set', 2),
-	has: wrap('has', 1),
-	keys: wrap('keys', 0),
-	remove: wrap('remove', 1),
-	clear: wrap('clear', 0),
+const get = async (key) => {
+	try {
+		return JSON.parse(await readFile(join(root, `${key}.json`), 'utf-8'));
+	} catch (e) {
+		return undefined;
+	}
 };
 
+const set = async (key, value) => {
+	await writeFile(join(root, `${key}.json`), JSON.stringify(value, null, 2), 'utf-8');
+};
 
+const has = async (key) => {
+	try {
+		await stat(join(root, `${key}.json`));
+		return true;
+	} catch (e) {
+		return false;
+	}
+};
+
+module.exports = { get, set, has };

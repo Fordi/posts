@@ -25,7 +25,7 @@ At present, the feature-set is limited - it's strictly notes saved locally for n
 * [x] Colored sticky notes
     * [ ] Algorithmically work out background / foreground colors from accent
 * [x] Table support
-* [ ] Image storage
+* [x] Image storage
 * [x] Production build for desktop platforms
 * [ ] Inline [sequence diagrams](https://bramp.github.io/js-sequence-diagrams/)
 * [ ] Implement storage encryption

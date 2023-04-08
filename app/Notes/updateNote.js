@@ -21,6 +21,7 @@ const updateNote = async ({ id: noteId, ...props }, add) => {
     }
   });
   if (changed) {
+    notes[index].modified = +new Date();
     await storage.set('notes', notes);
     fire(noteId);
   }

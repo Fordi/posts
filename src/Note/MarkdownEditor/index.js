@@ -67,6 +67,8 @@ export default function MarkdownEditor({
   onChange = () => {},
   value,
   placeholder,
+  saveFile = async () => {},
+  preProcessPastedHtml = async () => {},
 }) {
   const editor = useRef(null);
   
@@ -81,15 +83,35 @@ export default function MarkdownEditor({
     const { clipboardData, target, target: { value, selectionStart, selectionEnd} } = event;
     const types = [...clipboardData.types];
     if (types.indexOf('text/html') !== -1) {
-      const pastedMarkdown = td.turndown(clipboardData.getData('text/html'));
-      target.value = [
-        value.substring(0, selectionStart),
-        pastedMarkdown,
-        value.substring(selectionEnd)
-      ].join('');
-      target.selectionStart = target.selectionEnd = selectionStart + pastedMarkdown.length;
+      event.preventDefault();
+      const d = document.createElement('div');
+      d.innerHTML = clipboardData.getData('text/html'); 
+      (async () => {
+        await preProcessPastedHtml(d);
+        const pastedMarkdown = td.turndown(d.innerHTML);
+        const cursor = selectionStart + pastedMarkdown.length;
+        applyInput(target, {
+          value: [
+            value.substring(0, selectionStart),
+            pastedMarkdown,
+            value.substring(selectionEnd)
+          ].join(''),
+          selectionStart: cursor,
+          selectionEnd: cursor,
+        });
+      })();
+      return false;
     }
-  }, []);
+    if (types.length === 1 && types[0] === 'Files') {
+      const pastedImage = [...clipboardData.files].find(({ type }) => type.startsWith('image/'));
+      const reader = new FileReader();
+      reader.onload = async () => {
+        applyInput(target, await saveFile(reader.result, target));
+      };
+      reader.readAsDataURL(pastedImage);
+      return false;
+    }
+  }, [preProcessPastedHtml, saveFile]);
   
   useEffect(() => {
     if (autoFocus) editor.current.focus();
