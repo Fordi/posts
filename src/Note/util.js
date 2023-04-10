@@ -18,64 +18,92 @@ export const seekToNewLine = (text, position, forward) => {
   return p;
 };
 
+const insert = ({ value, selectionStart, selectionEnd }, text, select = false) => ({
+  value: `${value.substring(0, selectionStart)}${text}${value.substring(selectionEnd)}`,
+  selectionStart: select ? selectionStart : selectionStart + text.length,
+  selectionEnd: selectionStart + text.length,
+});
+
+const LIST_ITEM = /^((?:\s{4})*)(?:([*-]\s|\d+.\s)(\[[x_-\s]\]\s)?)?(.*)$/;
+
 export const indentSelection = ({ value, selectionStart, selectionEnd }) => {
-  if (selectionStart === selectionEnd) return {
-    value: `${value.substring(0, selectionStart)}    ${value.substring(selectionStart)}`,
-    selectionStart: selectionStart + 4,
-    selectionEnd: selectionStart + 4,
+  const lineStart = seekToNewLine(value, selectionStart, false);
+  const lineEnd = seekToNewLine(value, selectionEnd, true);
+
+  if (selectionStart === selectionEnd) {
+    const lineToCursor = value.substring(lineStart, selectionStart);
+    const cursorToEol = value.substring(selectionStart, lineEnd);
+    if (cursorToEol === '' && LIST_ITEM.test(lineToCursor)) {
+      return {
+        value: `${value.substring(0, lineStart)}    ${value.substring(lineStart)}`,
+        selectionStart: selectionStart + 4,
+        selectionEnd: selectionStart + 4,  
+      }
+    }
+    return {
+      value: `${value.substring(0, selectionStart)}    ${value.substring(selectionStart)}`,
+      selectionStart: selectionStart + 4,
+      selectionEnd: selectionStart + 4,
+    };
   };
 
-  const start = seekToNewLine(value, selectionStart, false);
-  const end = seekToNewLine(value, selectionEnd, true);
 
   const replacement = value
-    .substring(start, end)
+    .substring(lineStart, lineEnd)
     .split('\n')
     .map(line => `    ${line}`)
     .join('\n');
 
   return {
-    value: `${value.substring(0, start)}${replacement}${value.substring(end)}`,
-    selectionStart: start,
-    selectionEnd: start + replacement.length + 1,
+    value: `${value.substring(0, lineStart)}${replacement}${value.substring(lineEnd)}`,
+    selectionStart: lineStart,
+    selectionEnd: lineStart + replacement.length + 1,
   };
 };
 
 export const outdentSelection = ({ value, selectionStart, selectionEnd }) => {
-  let start = selectionStart;
-  let end = selectionEnd;
-  if (start === end) {
-    start--;
-    while (value[start] === ' ' && start > 0) start--;
-    if (value[start] !== '\n') return;
-    start++;
-    end = start;
-    while (value[end] === ' ' && end < value.length) end++;
-    const ws = value.substring(start, end);
-    const nws = ws.substring(0, ws.length - 4);
-    const dt = nws.length - ws.length;
+  const lineStart = seekToNewLine(value, selectionStart, false);
+  const lineEnd = seekToNewLine(value, selectionEnd, true);
+  if (selectionStart === selectionEnd) {
     return {
-      value: `${value.substring(0, start)}${nws}${value.substring(end)}`,
-      selectionStart: end + dt,
-      selectionEnd: end + dt,
-    };
+      value: `${value.substring(0, lineStart)}${value.substring(lineStart).replace(/^\s{4}/, '')}`,
+      selectionStart: selectionStart - 4,
+      selectionEnd: selectionStart - 4,  
+    }
   }
-  if (value[start] === '\n') start--;
-  while (value[start] !== '\n' && start > 0) start--;
-  if (value[start] === '\n') start++;
-
-  if (value[end] === '\n') end -= 1;
-  if (value[end - 1] === '\n') end -= 2;
-  while (value[end + 1] !== '\n' && end < value.length - 1) end += 1;
 
   const replacement = value
-    .substring(start, end)
+    .substring(lineStart, lineEnd)
     .split('\n')
     .map(line => line.replace(/^\s{0,4}/, ''))
     .join('\n');
   return {
-    value: `${value.substring(0, start)}${replacement}${value.substring(end)}`,
-    selectionStart: start,
-    selectionEnd: start + replacement.length + 1,
+    value: `${value.substring(0, lineStart)}${replacement}${value.substring(lineEnd)}`,
+    selectionStart: lineStart,
+    selectionEnd: lineStart + replacement.length + 1,
   };
+};
+
+export const continueList = (target) => {
+  const { value, selectionStart, selectionEnd } = target;
+  if (selectionStart !== selectionEnd) return;
+  const lineStart = seekToNewLine(value, selectionStart);
+  const lineEnd = seekToNewLine(value, selectionStart, true);
+  const line = value.substring(lineStart, lineEnd);
+  const lineToSelection = value.substring(lineStart, selectionStart);
+  let [matched, indent, list, check, content] = lineToSelection.match(LIST_ITEM);
+  if (!content && list && lineToSelection === line) {
+    return {
+      value: `${value.substring(0, lineStart)}\n${value.substring(lineEnd + 1)}`,
+      selectionStart: lineStart,
+      selectionEnd: lineStart,
+    };
+  }
+  if (line.replace(/^\n|\n$/g, '') === '') return;
+  if (matched) {
+    const start = [indent];
+    start.push(list && !isNaN(parseInt(list)) ? `${parseInt(list) + 1}. ` : list);
+    if (check) start.push('[ ] ');
+    return insert(target, `\n${start.join('')}`);
+  }
 };

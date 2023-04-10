@@ -57,7 +57,7 @@ const parseDataUrl = (dataUrl) => {
   let data;
   let metadata;
   if (mimeType.endsWith(';base64')) {
-    data = new Uint8Array([...atob(content)].map(n => n.charCodeAt(0)))
+    data = new Uint8Array([...atob(content)].map(n => n.charCodeAt(0)));
     metadata = { mimeType: mimeType.substring(0, mimeType.length - 7) };
   } else {
     data = new TextEncoder().encode(decodeURIComponent(content));
@@ -109,9 +109,12 @@ const postProcessRender = async (container) => Promise.all(
   })
 );
 
+const focusTitle = () => {
+  document.querySelector('.note__title').focus();
+};
+
 export default function Note({ noteId }) {
   const { note, updateNote, onTaskToggle, deleteNote } = useNote(noteId);
-
   const main = useRef(null);
 
   const [title, setTitle] = useState(null);
@@ -157,14 +160,7 @@ export default function Note({ noteId }) {
   const revertContent = useCallback(() => {
     setEditing(false);
     setContent(note?.note);
-  }, [note?.note]);
-
-  const focusTitle = useCallback(() => {
-    document.querySelector('.note__title').focus();
-  }, []);
-
-  
-
+  }, [note?.note]);  
   const menuItems = useTransform(() => [
     { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
     {
