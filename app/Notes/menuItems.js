@@ -5,7 +5,8 @@ const showOpenNotes = require("./showOpenNotes.js");
 const { BrowserWindow } = require("electron");
 
 module.exports = async function menuItems () {
-  const notes = await storage.get('notes');
+  const notesObj = (await storage.get('notes') || {});
+  const notes = Object.keys(notesObj).map((id) => ({ id, ...notesObj[id] }));
   return [
     {
       label: "New note",

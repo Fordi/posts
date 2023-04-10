@@ -50,7 +50,9 @@ module.exports = class TrayApp {
     await app.whenReady();
 
     // Initialize features
-    await Promise.all(this.#features.map(async (feature) => await feature.init?.()));
+    for (const feature of this.#features) {
+      await feature.init?.();
+    }
     await this.buildTrayMenu();
 
     // Let us hold shutdown so that features can do any async cleanup tasks.

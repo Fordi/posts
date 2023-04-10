@@ -34,6 +34,15 @@ const debounce = (fn, timeout = 250) => {
   };
 };
 
+let index = `file://${join(__dirname, '../../build/index.html')}`;
+if (isDev) {
+  const port = process.env.PORT || '3000';
+  index = `http://localhost:${port}/`;
+}
+
+const baseUrl = new URL(index);
+
+
 module.exports = async function showNote(noteId) {
   await app.whenReady();
   const { width, height, x, y, alwaysOnTop } = (await updateNote({ id: noteId, open: true })) || {};
@@ -41,16 +50,12 @@ module.exports = async function showNote(noteId) {
   window.setMenu(null);
   window.setWindowButtonVisibility?.(false);
   
-  const baseUrl = new URL(
-    isDev
-    ? 'http://localhost:3000/'
-    : `file://${join(__dirname, '../../build/index.html')}`
-  );
+  const url = new URL(baseUrl);
 
-  baseUrl.searchParams.append('mode', 'note');
-  baseUrl.searchParams.append('id', noteId);
+  url.searchParams.append('mode', 'note');
+  url.searchParams.append('id', noteId);
   
-  window.loadURL(baseUrl.toString());
+  window.loadURL(url.toString());
 
   const updateNoteLocation = async () => {
     const { width, height, x, y } = window.getBounds();
@@ -65,12 +70,19 @@ module.exports = async function showNote(noteId) {
       return;
     }
   });
+  
+  let shuttingDown = false;
 
   window.on('close', async () => {
+    if (shuttingDown) return;
     unlisten();
     try {
       await updateNote({ id: noteId, open: false }, false);
     } catch (e) {}
+  });
+
+  app.on('before-quit', () => {
+    shuttingDown = true;
   });
 
   window.on('move', debounce(updateNoteLocation));
