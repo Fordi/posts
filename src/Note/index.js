@@ -67,6 +67,7 @@ const parseDataUrl = (dataUrl) => {
 };
 
 const preProcessPastedHtml = async (container) => {
+  [...container.querySelectorAll('style')].forEach(tag => tag.parentNode.removeChild(tag));
   await Promise.all([...container.querySelectorAll('img')].map(async (img) => {
     if (!img.src.startsWith('data:')) return;
     const hash = await digestSha1(parseDataUrl(img.src)?.data);

@@ -1,7 +1,6 @@
 const { app, nativeImage, Tray, Menu, MenuItem } = require("electron");
 const { join } = require('path');
 const API = require("../API");
-const storage = require("../storage");
 
 const pkg = API.getPackage();
 

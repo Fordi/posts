@@ -23,3 +23,25 @@
 .markdown--render tr:nth-child(2n+1) {
   background-color: rgba(255, 255, 255, 0.05);
 }
+
+.markdown--render code {
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 1rem inset rgba(255, 255, 255, 0.02), 0 0 0 1rem inset rgba(0, 0, 0, 0.02);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  padding: 0 0.25em;
+}
+.markdown--render pre {
+  background: currentColor;
+  padding: 0.25em 0.5em;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25em;
+}
+.markdown--render pre>code {
+  display: block;
+  border: initial;
+  box-shadow: initial;
+  color: var(--note-bg);
+  border-radius: initial;
+}
