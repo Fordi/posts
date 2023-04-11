@@ -18,7 +18,7 @@ const noteWindowProps = {
   fullscreen: false, 
   skipTaskbar: true,
   title: 'Note',
-  icon : join(__dirname, '/icon_color.png'),
+  icon : join(__dirname, '/icon.png'),
   movable: true,
   maximizable: false,
   webPreferences: {

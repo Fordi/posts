@@ -52,7 +52,6 @@ const updateNote = async ({ id, ...props }, add) => {
   writeSync && promises.push(storage.set('notes', syncNotes));
   
   await Promise.all(promises);
-  console.log({ writeLocal, writeSync, updateHasNote });
   if (writeSync || updateHasNote) {
     fire(id);
   }

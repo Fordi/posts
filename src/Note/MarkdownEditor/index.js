@@ -24,7 +24,6 @@ const td = new TurndownService()
   .addRule('tables', {
     filter: ['table'],
     replacement(_, node) {
-      console.log(_, node);
       const rows = [...node.querySelectorAll('tr')];
       const numCols = rows.reduce((c, row) => Math.max(c, row.querySelectorAll('td, th').length), 0);
       if (numCols === 1) {
@@ -46,7 +45,6 @@ const td = new TurndownService()
           a[subject] > max ? [subject, a[subject]] : [value, max]
         ), ['', 0])[0];
       });
-      console.log(columnAligns);
       const head = node.querySelectorAll('thead')[0];
       const body = node.querySelectorAll('tbody')[0];
       const lines = [];
