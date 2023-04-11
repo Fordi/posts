@@ -119,14 +119,12 @@ export default function Note({ noteId }) {
   const main = useRef(null);
 
   const [title, setTitle] = useState(null);
-  const [content, setContent] = useState(null);
-  const [dirty, setDirty] = useState(false);
+  const [content, setContent] = useState(note?.note);
   const [editing, setEditing] = useState(false);
 
   const titleChange = useCallback(({ target: { value } }) => {
     setTitle(value);
     document.title = value;
-    setDirty(true);
   }, []);
 
   const commitTitle = useCallback(async ({ target: { value } }) => {
@@ -143,7 +141,6 @@ export default function Note({ noteId }) {
 
   const contentChange = useCallback(({ target: { value } }) => {
     setContent(value);
-    setDirty(true);
   }, []);
 
   const editNote = useCallback(() => {
@@ -152,16 +149,15 @@ export default function Note({ noteId }) {
   }, []);
 
   const saveNote = useCallback(async () => {
-    if (dirty) {
-      await updateNote({ title, note: content });
-    }
+    await updateNote({ title, note: content });
     setEditing(false);
-  }, [dirty, updateNote, title, content]);
+  }, [updateNote, title, content]);
 
   const revertContent = useCallback(() => {
     setEditing(false);
     setContent(note?.note);
   }, [note?.note]);  
+
   const menuItems = useTransform(() => [
     { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
     {
@@ -179,13 +175,13 @@ export default function Note({ noteId }) {
   ], [colorChange, deleteNote, editNote, editing, note?.accent, note?.alwaysOnTop, note?.id, saveNote, toggleAlways]);
   
   useEffect(() => {
-    if (note) {
-      setTitle(note?.title);
-      setContent(note?.note);
-      document.title = note?.title;
-      setDirty(false);
-    }
-  }, [note]);
+    setContent(note?.note);
+  }, [note?.note]);
+
+  useEffect(() => {
+    setTitle(note?.title);
+    document.title = note?.title;
+  }, [note?.title]);
 
   useAccelerators(() => ({
     'Super+L': focusTitle,

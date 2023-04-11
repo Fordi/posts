@@ -29,9 +29,11 @@ const updateNote = async ({ id, ...props }, add) => {
     syncNotes[id] = sync;
     writeSync = true;
   }
+
   if (updateHasNote) {
     promises.push(writeFile(mdFile, props.note, 'utf-8'));
   }
+
   ['accent', 'created', 'modified', 'width', 'height'].forEach((key) => {
     if (key in props && sync[key] !== props[key]) {
       sync[key] = props[key];
@@ -50,7 +52,10 @@ const updateNote = async ({ id, ...props }, add) => {
   writeSync && promises.push(storage.set('notes', syncNotes));
   
   await Promise.all(promises);
-  fire(id);
+  console.log({ writeLocal, writeSync, updateHasNote });
+  if (writeSync || updateHasNote) {
+    fire(id);
+  }
   return { id, note: props.note, ...local, ...sync };
 };
 
