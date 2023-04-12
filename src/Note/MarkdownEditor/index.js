@@ -114,6 +114,41 @@ export default function MarkdownEditor({
   const handleRichPaste = useCallback((event) => {
     const { clipboardData, target, target: { value, selectionStart, selectionEnd} } = event;
     const types = [...clipboardData.types];
+    if (types.indexOf('vscode-editor-data') !== -1 && types.indexOf('text/plain') !== -1) {
+      const codeData = (() => {
+        try {
+          return JSON.parse(clipboardData.getData('vscode-editor-data'));
+        } catch (e) {
+          return null;
+        }
+      })();
+      const text = clipboardData.getData('text/plain').split('\n');
+      const minSpc = ''.padEnd(Math.min(...text.slice(1).map((line) => line.match(/^\s*/)[0].length)));
+      text.forEach((line, index) => {
+        if (line.startsWith(minSpc)) {
+          text[index] = line.substring(minSpc.length);
+        }
+      });
+
+      const pastedMarkdown = [
+        `\`\`\`${codeData?.mode}`,
+        ...text,
+        `\`\`\``,
+        '',
+      ].join('\n');
+      const cursor = selectionStart + pastedMarkdown.length;
+      applyInput(target, {
+        value: [
+          value.substring(0, selectionStart),
+          pastedMarkdown,
+          value.substring(selectionEnd),
+        ].join(''),
+        selectionStart: cursor,
+        selectionEnd: cursor,
+      });
+      event.preventDefault();
+      return;
+    }
     if (types.indexOf('text/html') !== -1) {
       event.preventDefault();
       const d = document.createElement('div');
