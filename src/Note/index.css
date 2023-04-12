@@ -1,5 +1,5 @@
 .note {
-  background: var(--note-bg);
+  background: var(--content-bg);
 }
 .note>.layout__content {
   display: flex;
@@ -23,7 +23,7 @@
   width: 100vw;
   flex: 0 1 auto;
   resize: none;
-  color: inherit;
+  color: var(--title-fg);
   font-size: 1.25rem;
   line-height: 2rem;
   height: 2.625rem;
@@ -38,7 +38,8 @@
 }
 .note__editor {
   border: none;
-	background: #ECE5DD;
+	background: var(--code-bg);
+  color: var(--code-fg);
   font-family: var(--mono-fonts);
   font-size: 0.75rem;
   background-position: bottom right;

@@ -17,6 +17,7 @@ import { handleLink } from "./util.js";
 import "./index.css";
 import useTransform from "../util/useTransform.js";
 import useAccelerators from "../util/useAccelerators.js";
+import Theme from "../Theme.js";
 
 const closeWindow = () => window.close();
 
@@ -183,6 +184,12 @@ export default function Note({ noteId }) {
     document.title = note?.title;
   }, [note?.title]);
 
+  useEffect(() => {
+    if (note?.accent) {
+      Theme(note?.accent).apply();
+    }
+  }, [note?.accent]);
+
   useAccelerators(() => ({
     'Super+L': focusTitle,
     Escape: editing && revertContent,
@@ -190,7 +197,7 @@ export default function Note({ noteId }) {
   }), [focusTitle, editing, revertContent]);
 
   return (
-    <Layout loading={!note} style={{ color: note?.accent }} className="note" menu={menuItems}>
+    <Layout loading={!note} className="note" menu={menuItems}>
       {!!note && (
         <div className="note__main" tabIndex="0" ref={main}>
           <div className="note__heading">

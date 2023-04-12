@@ -1,5 +1,5 @@
 .menu {
-	color: var(--chrome-symbols);
+	color: var(--title-bar-fg);
 	user-select: none;
 	display: flex;
 	flex: 0 1 auto;

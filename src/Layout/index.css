@@ -12,7 +12,7 @@
 .accent-bar {
   box-sizing: border-box;
   width: 100vw;
-  background: currentColor;
+  background: var(--title-bar-bg);
   z-index: 9001;
   padding: 0.4rem 0;
   user-select: none;
@@ -33,7 +33,7 @@
 }
 
 .accent-bar__info {
-  background: currentColor;
+  background: var(--title-bar-bg);
   display: flex;
   padding: 0 0.2rem 0 0.4rem;
   margin-top: -1.85rem;
@@ -56,7 +56,7 @@
   display: block;
   font-size: 0.8rem;
   line-height: 1.6rem;
-  color: var(--chrome-symbols);
+  color: var(--title-bar-fg);
   margin-right: 0.5em;
   flex: 0 1 auto;
 }
@@ -65,19 +65,13 @@
   display: block;
   font-size: 0.5rem;
   line-height: 1.6rem;
-  color: var(--chrome-symbols);
-  opacity: 0.5;
+  color: var(--title-bar-fg);
+  opacity: 0.8;
   flex: 1 0 auto;
 }
 
-.accent-bar__move {
-  font-size: 0.8rem;
-  line-height: 1.6rem;
-  color: var(--note-bg);
-  flex: 0 0 auto;
-}
-
 .layout__content {
+  color: var(--content-fg);
   position: relative;
 }
 
