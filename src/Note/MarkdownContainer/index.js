@@ -24,6 +24,17 @@ const md = new MarkdownIt({
     autolabel: true,
   });
 
+const copyCode = (event) => {
+  event.preventDefault();
+  navigator.clipboard.writeText(event.target.textContent);
+  event.target.classList.add('copied');
+  requestAnimationFrame(() => {
+    event.target.classList.remove('copied');
+  });
+  window.getSelection().removeAllRanges();
+  return false;
+};
+
 export default function MarkdownContainer({ className, content, onCheckboxChange, postProcess = async () => {} }) {
   const rendered = useRef(null);
   const [needsRender, setNeedsRender] = useState(false);
@@ -81,6 +92,13 @@ export default function MarkdownContainer({ className, content, onCheckboxChange
     links.forEach((link) => {
       link.addEventListener('click', handleLink);
       link.title = link.href;
+    });
+    const codes = [...(rendered.current?.querySelectorAll('code') ?? [])];
+    codes.forEach((code) => {
+      if (code.parentElement.nodeName !== 'PRE') {
+        code.addEventListener('dblclick', copyCode);
+        code.title = 'Double-click to copy';
+      }
     });
   }, [needsListeners, needsRender, onChange]);
 
