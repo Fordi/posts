@@ -3,7 +3,7 @@
   "properName": "Posts",
   "description": "A no-frills, cross-platform sticky-notes app with Markdown support.",
   "author": "Bryan Elliott<fordiman@gmail.com>",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "main": "app/main.js",
   "homepage": ".",
