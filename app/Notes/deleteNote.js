@@ -1,6 +1,6 @@
 const { unlink } = require("fs/promises");
 const storage = require("../storage.js");
-const { default: getFilename } = require("./getFilename.js");
+const getFilename = require("./getFilename.js");
 const { fire } = require("./updateBus.js");
 
 module.exports = async function deleteNote(noteId) {
