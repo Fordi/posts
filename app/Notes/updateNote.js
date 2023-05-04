@@ -6,11 +6,11 @@ const getFilename = require("./getFilename.js");
 const updateNote = async ({ id, ...props }, add) => {
   const syncNotes = (await storage.get('notes')) || {};
   const localNotes = (await storage.get('window')) || {};
-  if (!add && !(syncNotes[id] && localNotes[id])) {
+  const sync = syncNotes[id];
+  const local = localNotes[id] ?? {};
+  if (!add && !syncNotes[id]) {
     throw new Error(`No note with id ${id}`);
-  }
-  const sync = syncNotes[id] || {};
-  const local = localNotes[id] || {};
+  }  
   let writeSync = false;
   let writeLocal = false;
   const promises = [];
