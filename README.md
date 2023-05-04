@@ -23,7 +23,7 @@ At present, the feature-set is limited - it's strictly notes saved locally for n
     * [x] indent/outdent lines
 * [x] Keep notes on top (per-note)
 * [x] Colored sticky notes
-    * [ ] Algorithmically work out background / foreground colors from accent
+    * [x] Algorithmically work out background / foreground colors from accent
 * [x] Table support
 * [x] Image storage
 * [x] Production build for desktop platforms
