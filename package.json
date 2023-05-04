@@ -3,7 +3,7 @@
   "properName": "Posts",
   "description": "A no-frills, cross-platform sticky-notes app with Markdown support.",
   "author": "Bryan Elliott<fordiman@gmail.com>",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "main": "app/main.js",
   "homepage": ".",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
-    "@fordi-org/taskify": "^1.0.0",
+    "@fordi-org/taskify": "^1.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
