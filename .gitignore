@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+# locally symlinked ~/.config/posts/notes and ~/.config/posts/storage
+/local-link
 /.pnp
 .pnp.js
 

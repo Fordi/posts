@@ -160,7 +160,7 @@ export default function Note({ noteId }) {
   const closeWindow = useCallback(async () => {
     await updateNote({ open: false });
     window.close();
-  });
+  }, [updateNote]);
 
   const menuItems = useTransform(() => [
     { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
