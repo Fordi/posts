@@ -23,7 +23,7 @@ module.exports = async function init() {
     await newNote();
   } else {
     await Promise.all(notes.map(async id => {
-      const { open } = await getWindowProps(id);
+      const { open } = (await getWindowProps(id)) ?? {};
       if (open) {
         await showNote(id);
       }
