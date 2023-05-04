@@ -31,7 +31,7 @@
   overflow: hidden;
   white-space: nowrap;
 }
-.note__editor, .note__content {
+.note__content {
   overflow-y: auto;
   box-sizing: border-box;
   flex: 1 1 auto;
@@ -47,6 +47,11 @@
   z-index: 3;
   resize: none;
   width: 100vw;
+  flex: 1 1 auto;
+  position: relative;
+}
+.note__editor>.cm-editor {
+  height: 100%;
 }
 
 .note__content {

@@ -1,14 +1,32 @@
 import { useCallback, useEffect, useRef } from "react"
+import CodeMirror from '@uiw/react-codemirror';
+import { createTheme } from '@uiw/codemirror-themes';
 import TurndownService from "turndown";
 import cls from "../../util/cls";
 import useShortcutHandler from "../../util/useShortcutHandler";
 import { continueList, indentSelection, outdentSelection, seekToNewLine } from "../util";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { languages } from '@codemirror/language-data';
+import useTransform from "../../util/useTransform";
+import { tags as t } from '@lezer/highlight';
+import './index.css';
+
+const markdownConfig = markdown({
+  base: markdownLanguage,
+  codeLanguages: languages,
+});
 
 const ALIGNS = {
   '': ['-', '-'],
   'left': [':', '-'],
   'right': ['-', ':'],
   'center': [':', ':'],
+};
+
+const editorConfig = {
+  lineNumbers: false,
+  foldGutter: false,
+  lineWrapping: true,
 };
 
 const td = new TurndownService()
@@ -101,6 +119,7 @@ export default function MarkdownEditor({
   placeholder,
   saveFile = async () => {},
   preProcessPastedHtml = async () => {},
+  theme = {},
 }) {
   const editor = useRef(null);
   
@@ -181,20 +200,74 @@ export default function MarkdownEditor({
   }, [preProcessPastedHtml, saveFile]);
   
   useEffect(() => {
-    if (autoFocus) editor.current.focus();
+    if (autoFocus) editor.current?.focus();
   }, [autoFocus]);
+  const cmTheme = useTransform(() => {
+    if (!theme) return undefined;
+    return createTheme({
+      theme: 'dark',
+      settings: {
+        background: theme.contentBg,
+        foreground: theme.contentFg,
+        caret: theme.contentFg,
+        selection: theme.accent,
+        selectionMatch: theme.accent,
+        lineHighlight: theme.activeLine,
+        fontFamily: `"Fira Code", "Consolas", monospace`,
+      },
+      styles: [
+        // Headings
+        { tag: t.heading, class: 'md-heading' },
+        // MD symbols
+        { tag: t.processingInstruction, class: 'md-symbol' },
+        // Blockquotes
+        { tag: t.quote, class: 'md-blockquote' },
+        // `keywords`
+        { tag: t.monospace, class: 'md-keyword' },
+        // italics
+        { tag: t.emphasis, class: 'md-italic' },
+        // bold
+        { tag: t.strong, class: 'md-bold' },
+        // Escaped items
+        { tag: t.escape, class: 'md-escaped' },
+        // Links and images
+        { tag: t.link, class: 'md-link' },
+        // The URL in them
+        { tag: t.url, class: 'md-url' },
+        // HR
+        { tag: t.contentSeparator, class: 'md-hr' },
+        // checkboxes
+        { tag: t.atom, class: 'md-check' },
+        // HTML entities
+        { tag: t.character, class: 'md-entity' },
+        // HTML-style comments
+        { tag: t.comment, class: 'md-comment' },
 
-  return (
-    <textarea
-      ref={editor}
-      className={cls("markdown-editor", className)}
-      placeholder={placeholder}
-      autoComplete="off"
-      autoFocus={autoFocus}
-      onChange={onChange}
-      value={value}
-      onKeyDown={handleEditorKeys}
-      onPaste={handleRichPaste}
-    ></textarea>
-  )
+        // Code blocks
+        // Keywords (class, return, etc)
+        { tag: t.keyword, class: 'md-code-keyword' },
+        // Strings
+        { tag: t.string, class: 'md-code-string' },
+        // {}, [], (), <>
+        { tag: t.bracket, class: 'md-code-brace' },
+        // All other punctuation
+        { tag: t.punctuation, class: 'md-code-punct' },
+        // Names of things
+        { tag: t.name, class: 'md-code-name' },
+        // Property names
+        { tag: t.propertyName, class: 'md-code-prop' },
+        // Numbers
+        { tag: t.number, class: 'md-code-num' },
+      ],
+    });
+  }, [theme]);
+  return <CodeMirror
+    className={cls("markdown-editor", className)}
+    onChange={onChange}
+    value={value}
+    extensions={[markdownConfig]}
+    basicSetup={editorConfig}
+    theme={cmTheme}
+  />;
+
 }

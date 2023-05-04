@@ -140,7 +140,7 @@ export default function Note({ noteId }) {
     await updateNote({ alwaysOnTop: !note?.alwaysOnTop });
   }, [note?.alwaysOnTop, updateNote]);
 
-  const contentChange = useCallback(({ target: { value } }) => {
+  const contentChange = useCallback((value) => {
     setContent(value);
   }, []);
 
@@ -184,11 +184,9 @@ export default function Note({ noteId }) {
     document.title = note?.title;
   }, [note?.title]);
 
-  useEffect(() => {
-    if (note?.accent) {
-      Theme(note?.accent).apply();
-    }
-  }, [note?.accent]);
+  const theme = useTransform(() => note?.accent && Theme(note?.accent), [note?.accent]);
+
+  useEffect(() => theme?.apply(), [theme]);
 
   useAccelerators(() => ({
     'Super+L': focusTitle,
@@ -223,6 +221,7 @@ export default function Note({ noteId }) {
                   value={content ?? ''}
                   saveFile={saveFile}
                   preProcessPastedHtml={preProcessPastedHtml}
+                  theme={theme}
                 />
 
                 <div className="status">
