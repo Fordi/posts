@@ -31,8 +31,6 @@
   border-radius: 0.25em;
   box-sizing: border-box;
   padding: 0 0.25em;
-  background: transparent;
-  transition: background 0.4s;
   user-select: none;
 }
 .markdown--render pre {
@@ -44,6 +42,7 @@
 .markdown--render pre>code {
   display: block;
   border: 1px solid var(--code-border);
+  background: transparent;
   color: var(--code-fg);
   border-radius: initial;
   user-select: initial;
