@@ -17,5 +17,6 @@
 }
 
 .menu__item:hover {
-	background-color: var(--hovered-icon);
+	background-color: var(--title-bar-fg);
+	color: var(--title-bar-bg);
 }
