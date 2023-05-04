@@ -19,8 +19,6 @@ import useTransform from "../util/useTransform.js";
 import useAccelerators from "../util/useAccelerators.js";
 import Theme from "../Theme.js";
 
-const closeWindow = () => window.close();
-
 const BROKEN_IMAGE = (() => {
   const d = document.createElement('broken-image');
   d.title = 'Broken image';
@@ -157,7 +155,12 @@ export default function Note({ noteId }) {
   const revertContent = useCallback(() => {
     setEditing(false);
     setContent(note?.note);
-  }, [note?.note]);  
+  }, [note?.note]);
+
+  const closeWindow = useCallback(async () => {
+    await updateNote({ open: false });
+    window.close();
+  });
 
   const menuItems = useTransform(() => [
     { title: "Delete", comp: Trash, onClick: deleteNote, accel: ['Super+Backspace'] },
